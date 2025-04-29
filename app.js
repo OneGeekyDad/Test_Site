@@ -33,6 +33,14 @@ app.get('/new', (req, res) => {
   res.render('new');
 });
 
+app.get('/projects', (req, res) => {
+  res.render('projects');
+});
+
+app.get('/cloudlog', (req, res) => {
+  res.render('cloudlog');
+});
+
 app.post('/new', async (req, res) => {
   const { title, content } = req.body;
   await Post.create({ title, content });
