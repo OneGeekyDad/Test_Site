@@ -4,7 +4,9 @@ const Post = require('./models/Post');
 const path = require('path');
 const app = express();
 
-const PORT = 3000;
+//const PORT = 3000;
+const PORT = process.env.PORT || 8081;
+
 const MONGO_URI = 'mongodb://localhost:27017/blogApp'; // Change if using Atlas
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -14,6 +16,10 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.send('Node.js app with MongoDB deployed to EB!');
+});
 
 app.get('/', async (req, res) => {
   const posts = await Post.find().sort({ createdAt: -1 });
@@ -48,7 +54,8 @@ app.post('/new', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Blog app running at http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
+  //console.log(`Blog app running at http://localhost:${PORT}`);
 });
 // This code sets up a simple blog application using Express and MongoDB. It connects to a MongoDB database, defines routes for viewing all posts, viewing a single post, and creating a new post, and uses EJS as the templating engine. The app listens on port 3000.
 // The MongoDB connection string is set to a local MongoDB instance, but can be changed to connect to a remote database if needed. The app serves static files from the 'public' directory and uses URL-encoded data for form submissions.
